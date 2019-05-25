@@ -143,7 +143,6 @@
                 url: 'https://autumnfish.cn/big/admin/getuser',
                 type: 'get',
                 success: function(data) {
-                    console.log(data);
                     $('.user_info i').text( data.data.nickname);
                     $('.user_info img').attr('src', data.data.user_pic);
                     $('.user_center_link img').attr('src', data.data.user_pic)

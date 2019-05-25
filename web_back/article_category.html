@@ -36,7 +36,7 @@
                         <td class="text-center">
                             <a href="javascript:editTr({&quot;id&quot;:&quot;1&quot;,&quot;slug&quot;:&quot;uncategorized&quot;,&quot;name&quot;:&quot;未分类&quot;});"
                                 class="btn btn-info btn-xs">编辑</a>
-                            <a href="javascript:deleteTr( 1 );" class="btn btn-danger btn-xs">删除</a>
+                            <a href="javascript:;" class="btn btn-danger btn-xs btn-delete">删除</a>
                         </td>
                     </tr>
 
@@ -46,7 +46,7 @@
                         <td class="text-center">
                             <a href="javascript:editTr({&quot;id&quot;:&quot;2&quot;,&quot;slug&quot;:&quot;funny&quot;,&quot;name&quot;:&quot;奇趣事&quot;});"
                                 class="btn btn-info btn-xs">编辑</a>
-                            <a href="javascript:deleteTr( 2 );" class="btn btn-danger btn-xs">删除</a>
+                            <a href="javascript:;" class="btn btn-danger btn-xs btn-delete">删除</a>
                         </td>
                     </tr>
 
@@ -56,7 +56,7 @@
                         <td class="text-center">
                             <a href="javascript:editTr({&quot;id&quot;:&quot;3&quot;,&quot;slug&quot;:&quot;living&quot;,&quot;name&quot;:&quot;会生活&quot;});"
                                 class="btn btn-info btn-xs">编辑</a>
-                            <a href="javascript:deleteTr( 3 );" class="btn btn-danger btn-xs">删除</a>
+                            <a href="javascript:;" class="btn btn-danger btn-xs btn-delete">删除</a>
                         </td>
                     </tr>
 
@@ -66,7 +66,7 @@
                         <td class="text-center">
                             <a href="javascript:editTr({&quot;id&quot;:&quot;4&quot;,&quot;slug&quot;:&quot;travel&quot;,&quot;name&quot;:&quot;爱旅行&quot;});"
                                 class="btn btn-info btn-xs">编辑</a>
-                            <a href="javascript:void(0);" class="btn btn-danger btn-xs btn-delete">删除</a>
+                            <a href="javascript:;" class="btn btn-danger btn-xs btn-delete">删除</a>
                         </td>
                     </tr>
                 </tbody>
@@ -134,7 +134,7 @@
                 <td>{{$value.slug}}</td>
                 <td class="text-center">
                     <a href="javascript:editTr({&quot;id&quot;:&quot;1&quot;,&quot;slug&quot;:&quot;uncategorized&quot;,&quot;name&quot;:&quot;未分类&quot;});" class="btn btn-info btn-xs">编辑</a>
-                    <a href="javascript:void(0);" class="btn btn-danger btn-xs btn-delete">删除</a>
+                    <a href="javascript:;" class="btn btn-danger btn-xs btn-delete">删除</a>
                 </td>
             </tr>
             {{/each}}
@@ -147,6 +147,7 @@
                         url: 'https://autumnfish.cn/big/admin/category_search',
                         type: 'get',
                         success: function (data) {
+                            console.log(data);
                             var html = template('tem', data.data);
                             $('.category_table tbody').html(html);
                         }
@@ -171,10 +172,7 @@
                     });
                 });
 
-                //删除操作
-               /*  $('.text-center').on('click','.btn-delete',function () {
-                    
-                }) */
+                
             });
         </script>
 </body>
