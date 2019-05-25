@@ -129,7 +129,7 @@
         </script>
         <script id="tem" type="text/html">
             {{each}}
-            <tr>
+            <tr id={{$value.id}}>
                 <td>{{$value.name}}</td>
                 <td>{{$value.slug}}</td>
                 <td class="text-center">
@@ -167,6 +167,18 @@
                             if (data.code == 200) {
                                 getData();
                             }
+                        }
+                    });
+                });
+                $('.text-center').on('click','.btn-delete',function () {
+                    var delId = $(this).parent().parent().attr('id');
+                    console.log(delId);
+                    $.ajax({
+                        url: 'https://autumnfish.cn/big/admin/.',
+                        type: 'post',
+                        data:{id:delId},
+                        success: function (data) {
+                            alert(data.msg);
                         }
                     });
                 });
