@@ -36,7 +36,7 @@
                         <td class="text-center">
                             <a href="javascript:editTr({&quot;id&quot;:&quot;1&quot;,&quot;slug&quot;:&quot;uncategorized&quot;,&quot;name&quot;:&quot;未分类&quot;});"
                                 class="btn btn-info btn-xs">编辑</a>
-                            <a href="javascript:;" class="btn btn-danger btn-xs btn-delete">删除</a>
+                            <a href="javascript:;" onclick="deleteTr(this)" class="btn btn-danger btn-xs ">删除</a>
                         </td>
                     </tr>
 
@@ -46,7 +46,7 @@
                         <td class="text-center">
                             <a href="javascript:editTr({&quot;id&quot;:&quot;2&quot;,&quot;slug&quot;:&quot;funny&quot;,&quot;name&quot;:&quot;奇趣事&quot;});"
                                 class="btn btn-info btn-xs">编辑</a>
-                            <a href="javascript:;" class="btn btn-danger btn-xs btn-delete">删除</a>
+                            <a href="javascript:;" onclick="deleteTr(this)" class="btn btn-danger btn-xs ">删除</a>
                         </td>
                     </tr>
 
@@ -56,7 +56,7 @@
                         <td class="text-center">
                             <a href="javascript:editTr({&quot;id&quot;:&quot;3&quot;,&quot;slug&quot;:&quot;living&quot;,&quot;name&quot;:&quot;会生活&quot;});"
                                 class="btn btn-info btn-xs">编辑</a>
-                            <a href="javascript:;" class="btn btn-danger btn-xs btn-delete">删除</a>
+                            <a href="javascript:;" onclick="deleteTr(this)" class="btn btn-danger btn-xs ">删除</a>
                         </td>
                     </tr>
 
@@ -66,7 +66,7 @@
                         <td class="text-center">
                             <a href="javascript:editTr({&quot;id&quot;:&quot;4&quot;,&quot;slug&quot;:&quot;travel&quot;,&quot;name&quot;:&quot;爱旅行&quot;});"
                                 class="btn btn-info btn-xs">编辑</a>
-                            <a href="javascript:;" class="btn btn-danger btn-xs btn-delete">删除</a>
+                            <a href="javascript:;" onclick="deleteTr(this)" class="btn btn-danger btn-xs ">删除</a>
                         </td>
                     </tr>
                 </tbody>
@@ -107,7 +107,7 @@
           </div>
         </div>
       </div>
-
+      
       <script>
           $('#addModal').modal({
             show:false,
@@ -134,7 +134,7 @@
                 <td>{{$value.slug}}</td>
                 <td class="text-center">
                     <a href="javascript:editTr({&quot;id&quot;:&quot;1&quot;,&quot;slug&quot;:&quot;uncategorized&quot;,&quot;name&quot;:&quot;未分类&quot;});" class="btn btn-info btn-xs">编辑</a>
-                    <a href="javascript:;" class="btn btn-danger btn-xs btn-delete">删除</a>
+                    <a href="javascript:;" onclick="deleteTr(this)" class="btn btn-danger btn-xs ">删除</a>
                 </td>
             </tr>
             {{/each}}
@@ -144,7 +144,7 @@
                 //获取类别信息
                 function getData() {
                     $.ajax({
-                        url: 'https://autumnfish.cn/big/admin/category_search',
+                        url: 'https://autumnfish.cn/big32/admin/category_search',
                         type: 'get',
                         success: function (data) {
                             var html = template('tem', data.data);
@@ -161,28 +161,47 @@
                             name: $('.cat-name').val().trim(),
                             slug: $('.cat-slug').val().trim()
                         },
-                        url: 'https://autumnfish.cn/big/admin/category_add',
+                        url: 'https://autumnfish.cn/big32/admin/category_add',
                         success: function (data) {
+                            console.log(data.msg);
                             $('#addModal').modal('hide');
                             if (data.code == 200) {
                                 getData();
                             }
+                            if(data.msg == 'name或slug已存在,请检查'){
+                                alert('类名已存在');
+                            }
                         }
                     });
                 });
-                $('.text-center').on('click','.btn-delete',function () {
-                    var delId = $(this).parent().parent().attr('id');
-                    console.log(delId);
-                    $.ajax({
-                        url: 'https://autumnfish.cn/big/admin/.',
-                        type: 'post',
-                        data:{id:delId},
-                        success: function (data) {
-                            alert(data.msg);
-                        }
-                    });
-                });
+               window.getData = getData;
+               //新增操作回车实现和新增操作内容之前内容清空
+               $('.btn-success').click(function () {
+                   $('.cat-name').val('');
+                   $('.cat-slug').val('');
+               });
+
+               $('.cat-slug').keyup(function (e) {
+                   if (e.keyCode == 13) {
+                       $('#model_add').click();
+                   }
+               })
             });
+        </script>
+        <script>
+            //删除操作
+            function deleteTr(obj) {
+                var delId = $(obj).parent().parent().attr('id');
+                $.ajax({
+                    type: 'post',
+                    url: 'https://autumnfish.cn/big32/admin/category_delete',
+                    data: { id: delId },
+                    success: function (data) {
+                        alert(data.msg);
+                        getData();
+                    }
+                });
+            }
         </script>
 </body>
 
