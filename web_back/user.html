@@ -73,7 +73,7 @@
             //获取用户信息
             $.ajax({
                 type: 'get',
-                url: 'https://autumnfish.cn/big/admin/userinfo_get',
+                url: 'https://autumnfish.cn/big32/admin/userinfo_get',
                 success: function (data) {
                     for (var key in data.data) {
                         $('input.' + key).val(data.data[key]);
@@ -92,7 +92,7 @@
                 var formData = new FormData($('.article_form')[0]);
                 $.ajax({
                     type: 'post',
-                    url: 'https://autumnfish.cn/big/admin/userinfo_edit',
+                    url: 'https://autumnfish.cn/big32/admin/userinfo_edit',
                     data: formData,
                     contentType: false,
                     processData: false,
