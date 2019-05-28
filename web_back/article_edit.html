@@ -28,25 +28,20 @@
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2 control-label">文章标题：</label>
                     <div class="col-sm-10">
-                        <input type="email" class="form-control" id="inputEmail3" value="文章标题文字">
+                        <input type="text" class="form-control" id="inputEmail3" value="文章标题文字" name="title">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputPassword3" class="col-sm-2 control-label">文章封面：</label>
                     <div class="col-sm-10">
                         <img src="images/pic06.jpg" class="article_cover">
-                        <input type="file" id="exampleInputFile">
+                        <input type="file" id="exampleInputFile" name="cover">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2 control-label">文章类别：</label>
                     <div class="col-sm-4">
-                        <select class="form-control">
-                            <option>类别一</option>
-                            <option>类别二</option>
-                            <option>类别三</option>
-                            <option selected>类别四</option>
-                            <option>类别五</option>
+                        <select class="form-control" name="type">
                         </select>
                     </div>
                 </div>
@@ -55,7 +50,7 @@
                     <div class="col-sm-4">
 
                         <div class="input-group">
-                            <input type="text" class="form-control" value="2019-05-17" id="dateinput">
+                            <input type="text" class="form-control" value="2019-05-17" id="dateinput" name="date">
                             <span class="input-group-btn">
                                 <button class="btn btn-default" type="button"
                                     onclick="jeDate('#dateinput',{trigger:false,format: 'YYYY-MM-DD'})"><i
@@ -78,29 +73,7 @@
             </form>
         </div>
     </div>
-    <!-- 文章类别渲染 -->
-    <script id="cate" type="text/html">
-        {{each data v}}
-        <option>{{v.name}}</option>
-        {{/each}}
-    </script>
-    <script>
-        $(function () {
-            //上传图片预览
-            $('#exampleInputFile').change(function () {
-                var url = URL.createObjectURL(this.files[0]);
-                $('.article_cover').attr('src',url);
-            })
-
-            //文章类别获取
-            $.ajax({
-                url: 'http://localhost:8000/admin/category_search',
-                success: function(data) {
-                    $('.form-control').html(template('cate',data));
-                }
-            });
-        })
-    </script>
+    
 </body>
 
 </html>

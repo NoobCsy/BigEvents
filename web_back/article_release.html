@@ -15,6 +15,12 @@
     <script src="js/jedate/js/jedate.js"></script>
     <script src="js/tinymce/js/tinymce/tinymce.min.js"></script>
     <script src="js/tinymce/js/tinymce_setup.js"></script>
+    <script src="js/template-web.js"></script>
+    <style>
+        .preview {
+            width: 100px;
+        }
+    </style>
 </head>
 
 <body>
@@ -27,24 +33,21 @@
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2 control-label">文章标题：</label>
                     <div class="col-sm-10">
-                        <input type="email" class="form-control" id="inputEmail3" placeholder="文章标题">
+                        <input type="email" class="form-control" id="inputEmail3" placeholder="文章标题" name="title">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputPassword3" class="col-sm-2 control-label">文章封面：</label>
                     <div class="col-sm-10">
-                        <input type="file" id="exampleInputFile">
+                        <img src="" alt="" class="preview" >
+                        <input type="file" id="exampleInputFile" name="cover">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2 control-label">文章类别：</label>
                     <div class="col-sm-4">
-                        <select class="form-control">
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
+                        <select class="form-control" name="type">
+                            
                         </select>
                     </div>
                 </div>
@@ -53,7 +56,7 @@
                     <div class="col-sm-4">
 
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="YYYY-MM-DD" id="dateinput">
+                            <input type="text" class="form-control" placeholder="YYYY-MM-DD" id="dateinput" name="date">
                             <span class="input-group-btn">
                                 <button class="btn btn-default" type="button"
                                     onclick="jeDate('#dateinput',{trigger:false,format: 'YYYY-MM-DD'})"><i
@@ -79,7 +82,47 @@
             </form>
         </div>
     </div>
+    <!-- 文章类别渲染 -->
+    <script id="cate" type="text/html">
+            {{each data v}}
+            <option value="{{v.id}}">{{v.name}}</option>
+            {{/each}}
+        </script>
+    <script>
+        $(function () {
+            //上传图片预览
+            $('#exampleInputFile').change(function () {
+                var url = URL.createObjectURL(this.files[0]);
+                $(this).prev('img').attr('src', url);
+            })
 
+            //文章类别获取
+            $.ajax({
+                url: 'http://localhost:8000/admin/category_search',
+                success: function (data) {
+                    $('.form-control').html(template('cate', data));
+                }
+            });
+
+            //文章新增
+            $('.btn-success').click(function (e) {
+                e.preventDefault();
+                var formData = new FormData($('.article_form')[0]);//需要时dom对象
+                formData.append('content', tinyMCE.activeEditor.getContent());
+                formData.append('state', '草稿');
+                $.ajax({
+                    url: 'http://localhost:8000/admin/article_publish',
+                    data: formData,
+                    type: 'post',
+                    processData: false,
+                    contentType: false,
+                    success: function (data) {
+                        console.log(data);
+                    }
+                });
+            });
+        })
+    </script>
 </body>
 
 </html>
