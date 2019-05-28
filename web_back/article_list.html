@@ -302,7 +302,8 @@
         $(function () {
             //获取分页数据函数
             var myPage = 1;
-            function getPageData(a,b) {
+            var myTotalPage = 10;
+            function getPageData() {
                 $.ajax({
                     url: 'http://localhost:8000/admin/search',
                     data: {
@@ -312,9 +313,23 @@
                         state: $('#selStatus').val()
                     },
                     success: function (data) {
-                        console.log(data);
                         $('tbody').html(template('article', data));
-
+                        //因为插件onPageClick函数有bug,会自己执行,所以增加条件判断页面总数是否变化,如果变换,重新渲染页数.
+                        var totalPages = data.totalPage;
+                        if (myTotalPage != totalPages) {
+                            myTotalPage = totalPages;
+                            //  var currentPage = $('.pagination').twbsPagination('getCurrentPage');
+                            $('.pagination').twbsPagination('destroy');
+                            $('.pagination').twbsPagination($.extend({}, defaultOpts,
+                                {
+                                    // startPage: currentPage > totalPages?totalPages:currentPage,
+                                    //开始页面:如果当前页面>总页面,开始页面设置为总页面,否则为当前页面,不符合通常用户体验,通常用户体验重新获取数据后,回到第一页
+                                    startPage: 1,
+                                    totalPages: totalPages,
+                                }
+                            ))
+                        }
+                        
                     }
                 });
             }
@@ -326,10 +341,10 @@
                     $('#selCategory').append(template('cate', data));
                 }
             });
-            
 
-            //页数控制
-            $('.pagination').twbsPagination({
+
+            // 页数控制
+            var defaultOpts = {
                 totalPages: 35,
                 visiblePages: 7,
                 first: '首页',
@@ -339,8 +354,9 @@
                 onPageClick: function (event, page) {
                     myPage = page;
                     getPageData();
-                }
-            });
+                }       
+            };
+            $('.pagination').twbsPagination(defaultOpts);
 
             //点击筛选
             $('#btnSearch').click(function (e) {
